@@ -8,6 +8,8 @@ export async function POST(req: Request) {
   const session = await auth.api.getSession({ headers: req.headers });
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  type TaskRef = { id: string; workspaceId: string; projectId: string };
+
   const body = await req.json();
   const taskIds: string[] = Array.isArray(body.taskIds)
     ? body.taskIds.map((id: unknown) => String(id)).filter(Boolean)
@@ -18,7 +20,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Bad request" }, { status: 400 });
   }
 
-  const tasks = await prisma.task.findMany({
+  const tasks: TaskRef[] = await prisma.task.findMany({
     where: { id: { in: taskIds }, deletedAt: null },
     select: { id: true, workspaceId: true, projectId: true },
   });
