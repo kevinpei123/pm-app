@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0b0b0b;
 }
 
 @theme inline {
@@ -22,5 +22,38 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+body[data-full-page="true"] .workspace-sidebar {
+  display: none;
+}
+
+body[data-full-page="true"] .workspace-main {
+  flex: 1 1 auto;
+  max-width: none;
+}
+
+/* Darken neutral text utilities for better contrast on light panels. */
+.text-zinc-400 {
+  color: #52525b;
+}
+
+.text-zinc-500 {
+  color: #3f3f46;
+}
+
+.text-zinc-600 {
+  color: #30303a;
+}
+
+input,
+textarea,
+select {
+  color: #0b0b0b;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #5b5b66;
 }
