@@ -283,7 +283,7 @@ export async function POST(req: Request) {
   if ((task as { recurrenceEndAt?: Date | null }).recurrenceEndAt?.toISOString() !== recurrenceEndAt?.toISOString()) {
     changedFields.push("recurrenceEndAt");
   }
-  const previousDeps = task.dependencies.map((d) => d.dependsOnId).sort();
+  const previousDeps = task.dependencies.map((d: { dependsOnId: string }) => d.dependsOnId).sort();
   const nextDeps = filteredDependencyIds.slice().sort();
   if (previousDeps.join(",") !== nextDeps.join(",")) changedFields.push("dependencies");
   const previousTags = task.tags.map((t: { tagId: string }) => t.tagId).sort();
