@@ -8,7 +8,16 @@ export default async function NotificationsPage() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/sign-in");
 
-  const notifications = await prisma.notification.findMany({
+  type NotificationRow = {
+    id: string;
+    type: string;
+    title: string;
+    body: string | null;
+    readAt: Date | null;
+    createdAt: Date;
+  };
+
+  const notifications: NotificationRow[] = await prisma.notification.findMany({
     where: { userId: session.user.id },
     orderBy: { createdAt: "desc" },
     select: {
