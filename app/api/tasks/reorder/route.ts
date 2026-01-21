@@ -45,11 +45,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid task list" }, { status: 400 });
     }
 
-    const existing = await prisma.task.findMany({
+    type ExistingTask = { id: string; status: string; order: number };
+
+    const existing: ExistingTask[] = await prisma.task.findMany({
       where: { id: { in: allIds }, workspaceId, projectId },
       select: { id: true, status: true, order: true },
     });
-    const existingById = new Map(existing.map((t) => [t.id, t]));
+    const existingById = new Map(existing.map((task) => [task.id, task]));
 
     // Write orders with gaps (1000) so future inserts have room
     const updates: Array<{ id: string; status: Status; order: number }> = [];
